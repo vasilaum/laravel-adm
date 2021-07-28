@@ -30,7 +30,7 @@ class UserPutRequest extends FormRequest
             'name'                  => ['required', 'max:100', 'min:3'],
             'email'                 => ['required', 'max:100', 'email:rfc,dns'],
             'password'              => ['nullable', 'max:100', 'min:8'],
-            'user_id'               => ['required', 'integer']
+            'id'                    => ['required', 'integer', 'exists:App\Models\User,id']
         ];
     }
 
@@ -46,7 +46,8 @@ class UserPutRequest extends FormRequest
             'max'       => 'O campo :attribute deve ser menor ou igual a :max',
             'min'       => 'O campo :attribute deve ser maior ou igual a :min',
             'email'     => 'O campo :attribute deve ser um email válido',
-            'integer'   => 'O campo :attribute deve ser um número inteiro'
+            'integer'   => 'O campo :attribute deve ser um número inteiro',
+            'exists'    => 'O Registro (ID :input) deve existir no banco de dados'
         ];
     }
 }

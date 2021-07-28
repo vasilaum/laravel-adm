@@ -9,7 +9,7 @@
 </head>
 <body>
     <div>
-        <form action="{{ route('users.permissions.store', ['userId' => $userId] ) }}" method="POST">
+        <form action="{{ route('users.permissions.store', ['userId' => $userId] ) }}" method="POST" class="form-type-ajax">
 
             @csrf
 
@@ -26,6 +26,8 @@
             <input type="submit" value="Salvar" />
         </form>
     </div>
+
+    <div class="alert alert-danger form-errors hide"></div>
 
     <div>
         <a href="{{ route('users.index') }}">Voltar</a>

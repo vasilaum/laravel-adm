@@ -35,7 +35,7 @@ class UserRepository
 
     public function update(Array $requestData)
     {
-        $id             = (int) $requestData['user_id'];
+        $id             = (int) $requestData['id'];
         $user           = $this->model->find($id);
 
         $user->name     = $requestData['name'];

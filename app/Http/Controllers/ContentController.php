@@ -13,14 +13,15 @@ class ContentController extends Controller
     {
         try {
             return view('contents.index', array(
-                'contents' => $repository->findAllWithPaginate($request->get('categoryId'), 1)
+                'contents'      => $repository->findAllWithPaginate($request->get('categoryId'), 1),
+                'categoryId'    => $request->get('categoryId')
             ));
         } catch (\Exception $e) {
             return response()->view('errors.500', [], 500);
         }
     }
 
-    public function form(ContentRepository $repository, Int $id = NULL)
+    public function form(ContentGetRequest $request, ContentRepository $repository, Int $id = NULL)
     {
         try {
             if (!empty($id)) {
@@ -29,7 +30,9 @@ class ContentController extends Controller
                 ));
             }
 
-            return view('contents.create');
+            return view('contents.create', array(
+                'categoryId' => $request->get('categoryId')
+            ));
         } catch (\Exception $e) {
             return response()->view('errors.500', [], 500);
         }
@@ -40,9 +43,14 @@ class ContentController extends Controller
         try {
             $repository->store($request->all());
 
-            return redirect(route('contents.index', ['categoryId' => 1]));
+            return response()->json([
+                'message'               => 'Ação realizada com sucesso',
+                'succefulRequestAction' => 'back'
+            ], 200);
         } catch (\Exception $e) {
-            return response()->view('errors.500', [], 500);
+            return response()->json([
+                'message'   => 'Ocorreu um erro ao salvar, tente novamente mais tarde'
+            ], 500);
         }
     }
 
@@ -51,9 +59,14 @@ class ContentController extends Controller
         try {
             $repository->update($request->all());
 
-            return redirect()->intended('/content-categories');
+            return response()->json([
+                'message'               => 'Ação realizada com sucesso',
+                'succefulRequestAction' => 'back'
+            ], 200);
         } catch (\Exception $e) {
-            return response()->view('errors.500', [], 500);
+            return response()->json([
+                'message'   => 'Ocorreu um erro ao salvar, tente novamente mais tarde'
+            ], 500);
         }
     }
 

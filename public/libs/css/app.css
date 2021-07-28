@@ -10845,3 +10845,9 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+/* #################
+    DEF. SCSS
+################# */
+.hide {
+  display: none;
+}

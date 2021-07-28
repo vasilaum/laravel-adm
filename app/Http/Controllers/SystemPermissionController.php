@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Repositories\SystemPermissionRepository;
 use App\Http\Requests\SystemPermission\SystemPermissionPostRequest;
 use App\Http\Requests\SystemPermission\SystemPermissionPutRequest;
+use App\Http\Requests\SystemPermission\SystemPermissionGetRequest;
 
 class SystemPermissionController extends Controller
 {
-    public function index(SystemPermissionRepository $repository, Int $moduleId)
+    // $request required for validation for $userId param //
+    public function index(SystemPermissionGetRequest $request, SystemPermissionRepository $repository, Int $moduleId)
     {
         try {
             return view('system-permissions.index', array(
@@ -43,9 +45,14 @@ class SystemPermissionController extends Controller
         try {
             $repository->store($request->all());
 
-            return redirect(route('system.permissions.index', ['moduleId' => $request->get('system_module_id')]));
+            return response()->json([
+                'message'               => 'Ação realizada com sucesso',
+                'succefulRequestAction' => 'back'
+            ], 200);
         } catch (\Exception $e) {
-            return response()->view('errors.500', [], 500);
+            return response()->json([
+                'message'   => 'Ocorreu um erro ao salvar, tente novamente mais tarde'
+            ], 500);
         }
     }
 
@@ -54,9 +61,14 @@ class SystemPermissionController extends Controller
         try {
             $repository->update($request->all());
 
-            return redirect(route('system.permissions.index', ['moduleId' => $request->get('system_module_id')]));
+            return response()->json([
+                'message'               => 'Ação realizada com sucesso',
+                'succefulRequestAction' => 'back'
+            ], 200);
         } catch (\Exception $e) {
-            return response()->view('errors.500', [], 500);
+            return response()->json([
+                'message'   => 'Ocorreu um erro ao salvar, tente novamente mais tarde'
+            ], 500);
         }
     }
 

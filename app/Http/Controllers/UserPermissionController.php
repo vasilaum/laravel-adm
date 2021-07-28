@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\UserPermissionRepository;
-use Illuminate\Http\Request;
+use App\Http\Requests\UserPermission\UserPermissionGetRequest;
 
 class UserPermissionController extends Controller
 {
-    public function index(UserPermissionRepository $repository, Int $userId)
+    // $request required for validation for $userId param //
+    public function index(UserPermissionGetRequest $request, UserPermissionRepository $repository, Int $userId)
     {
         try {
             return view('users.permissions.index', array(
@@ -21,17 +22,21 @@ class UserPermissionController extends Controller
         }
     }
 
-    public function store(UserPermissionRepository $repository, Request $request, Int $userId)
+    public function store(UserPermissionGetRequest $request, UserPermissionRepository $repository, Int $userId)
     {
         try {
             $permissionIds = $request->get('permissions') ?? [];
             $repository->store($permissionIds, $userId);
 
 
-            return redirect(route('users.permissions.index', ['userId' => $userId]));
+            return response()->json([
+                'message'               => 'Ação realizada com sucesso',
+                'succefulRequestAction' => 'reload'
+            ], 200);
         } catch (\Exception $e) {
-            echo $e->getMessage();
-            return response()->view('errors.500', [], 500);
+            return response()->json([
+                'message'   => 'Ocorreu um erro ao salvar, tente novamente mais tarde'
+            ], 500);
         }
     }
 }

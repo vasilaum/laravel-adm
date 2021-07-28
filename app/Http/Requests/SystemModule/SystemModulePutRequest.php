@@ -29,7 +29,7 @@ class SystemModulePutRequest extends FormRequest
         return [
             'name'      => ['required', 'max:50', 'min:3'],
             'codename'  => ['required', 'max:50', 'min:3'],
-            'id'        => ['required', 'integer']
+            'id'        => ['required', 'integer', 'exists:App\Models\SystemModule,id']
         ];
     }
 
@@ -44,7 +44,8 @@ class SystemModulePutRequest extends FormRequest
             'required'  => 'O campo :attribute é obrigatório',
             'max'       => 'O campo :attribute deve ser menor ou igual a :max',
             'min'       => 'O campo :attribute deve ser maior ou igual a :min',
-            'integer'   => 'O campo :attribute deve ser um número inteiro'
+            'integer'   => 'O campo :attribute deve ser um número inteiro',
+            'exists'    => 'O Registro (ID :input) deve existir no banco de dados'
         ];
     }
 }

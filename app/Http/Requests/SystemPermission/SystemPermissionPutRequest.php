@@ -42,7 +42,7 @@ class SystemPermissionPutRequest extends FormRequest
                 'integer',
                 'exists:App\Models\SystemModule,id'
             ],
-            'id'                => ['required', 'integer']
+            'id' => ['required', 'integer', 'exists:App\Models\SystemPermission,id']
         ];
     }
 
@@ -59,7 +59,7 @@ class SystemPermissionPutRequest extends FormRequest
             'min'       => 'O campo :attribute deve ser maior ou igual a :min',
             'integer'   => 'O campo :attribute deve ser número inteiro',
             'in'        => 'O campo :attribute deve ser um destes valores :values',
-            'exists'    => 'O módulo (ID :input) deve existir no banco de dados'
+            'exists'    => 'O Registro (Campo :attribute | ID :input) deve existir no banco de dados'
         ];
     }
 }

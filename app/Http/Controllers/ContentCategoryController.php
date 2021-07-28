@@ -39,9 +39,14 @@ class ContentCategoryController extends Controller
         try {
             $repository->store($request->all());
 
-            return redirect()->intended('/content-categories');
+            return response()->json([
+                'message'               => 'Ação realizada com sucesso',
+                'succefulRequestAction' => 'back'
+            ], 200);
         } catch (\Exception $e) {
-            return response()->view('errors.500', [], 500);
+            return response()->json([
+                'message'   => 'Ocorreu um erro ao salvar, tente novamente mais tarde'
+            ], 500);
         }
     }
 
@@ -50,9 +55,14 @@ class ContentCategoryController extends Controller
         try {
             $repository->update($request->all());
 
-            return redirect()->intended('/content-categories');
+            return response()->json([
+                'message'               => 'Ação realizada com sucesso',
+                'succefulRequestAction' => 'back'
+            ], 200);
         } catch (\Exception $e) {
-            return response()->view('errors.500', [], 500);
+            return response()->json([
+                'message'   => 'Ocorreu um erro ao salvar, tente novamente mais tarde'
+            ], 500);
         }
     }
 

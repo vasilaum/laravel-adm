@@ -9,7 +9,7 @@
 </head>
 <body>
     <div>
-        <a href="{{ route('contents.form') }}">Novo</a>
+        <a href="{{ route('contents.form', ['categoryId' => $categoryId]) }}">Novo</a>
     </div>
     <div>
         @foreach ($contents as $content)
