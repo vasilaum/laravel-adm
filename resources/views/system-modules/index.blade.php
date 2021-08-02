@@ -23,7 +23,7 @@
                 <a href="{{ route('system.permissions.index', ['moduleId' => $systemModule->id]) }}">Permissões</a>
             </p>
             <p>
-                <button href="#" class="btn btn-danger btn-system-module-destroy" value="{{ $systemModule->id }}">Deletar</button>
+                <button href="#" class="btn btn-danger btn-destroy-ajax" data-url="{{ route('system.modules.destroy', ['id' => $systemModule->id]) }}">Deletar</button>
             </p>
         @endforeach
     </div>

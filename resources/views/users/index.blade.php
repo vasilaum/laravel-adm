@@ -19,7 +19,7 @@
                 <a href="{{ route('users.form', ['id' => $user->id]) }}">Editar</a>
             </p>
             <p>
-                <button href="#" class="btn btn-danger btn-user-destroy" value="{{ $user->id }}">Deletar</button>
+                <button href="#" class="btn btn-danger btn-destroy-ajax" data-url="{{ route('users.destroy', ['id' => $user->id]) }}">Deletar</button>
             </p>
             <p>
                 <a href="{{ route('users.permissions.index', ['userId' => $user->id]) }}">Permissões</a>

@@ -10,6 +10,10 @@ use App\Http\Controllers\SystemModuleController;
 use App\Http\Controllers\SystemPermissionController;
 use App\Http\Controllers\ContentCategoryController;
 use App\Http\Controllers\ContentController;
+use App\Http\Controllers\ContentImageController;
+
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 
 Route::get('login',     [LoginController::class, 'index'])->name('login');
 Route::get('logout',    [LoginController::class, 'logout'])->name('logout');
@@ -49,14 +53,37 @@ Route::middleware(['auth', 'system.module.permission'])->group(function () {
     Route::delete('content-categories/{id}',        [ContentCategoryController::class, 'destroy'])->name('content.categories.destroy');
 
     ## CONTENTS ##
-    Route::get('/contents',             [ContentController::class, 'index'])->name('contents.index');
-    Route::get('/contents/form/{id?}',  [ContentController::class, 'form'])->name('contents.form');
+    Route::get('contents',              [ContentController::class, 'index'])->name('contents.index');
+    Route::get('contents/form/{id?}',   [ContentController::class, 'form'])->name('contents.form');
     Route::post('contents',             [ContentController::class, 'store'])->name('contents.store');
     Route::put('contents',              [ContentController::class, 'update'])->name('contents.update');
     Route::delete('contents/{id}',      [ContentController::class, 'destroy'])->name('contents.destroy');
+
+    ## CONTENTS IMAGES ##
+    Route::get('content-images',            [ContentImageController::class, 'index'])->name('content.images.index');
+    Route::post('content-images',           [ContentImageController::class, 'store'])->name('content.images.store');
+    Route::delete('content-images/{id}',    [ContentImageController::class, 'destroy'])->name('content.images.destroy');
+    Route::put('content-images',            [ContentImageController::class, 'update'])->name('content.images.update');
 });
 
 ## DASHBOARD ##
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
 });
+
+## GET IMAGES FROM STORAGE ##
+Route::get('storage/{filename}', function ($filename) {
+    $path = storage_path('app\public\\' . str_replace('--', '\\', $filename));
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+
+    return $response;
+})->name('get.storage.images');

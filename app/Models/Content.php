@@ -4,10 +4,28 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Content extends Model
 {
     use HasFactory;
+
+    /**
+     * hooks.
+     */
+    public static function boot()
+    {
+        // Delete image of content storage after delete model //
+        static::deleting(function (Content $content) {
+            $images = ContentImage::where('content_id', $content->id)->get();
+
+            foreach($images as $image) {
+                Storage::delete(env('STORAGE_CONTENT_IMAGES_PATH') . $image->path);
+            }
+        });
+
+        parent::boot();
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -26,5 +44,13 @@ class Content extends Model
     public function category()
     {
         return $this->belongsTo(ContentCategory::class);
+    }
+
+    /**
+     * Get all contents for category
+     */
+    public function images()
+    {
+        return $this->hasMany(ContentImage::class);
     }
 }

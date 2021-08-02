@@ -22,7 +22,7 @@
                 <a href="{{ route('contents.index', ['categoryId' => $category->id]) }}">Conteúdos</a>
             </p>
             <p>
-                <button href="#" class="btn btn-danger btn-content-category-destroy" value="{{ $category->id }}">Deletar</button>
+                <button href="#" class="btn btn-danger btn-destroy-ajax" data-url="{{ route('content.categories.destroy', ['id' => $category->id]) }}">Deletar</button>
             </p>
         @endforeach
     </div>

@@ -20,7 +20,7 @@
                 <a href="{{ route('system.permissions.form', ['moduleId' => $systemModuleId, 'id' => $action->id]) }}">Editar</a>
             </p>
             <p>
-                <button href="#" class="btn btn-danger btn-system-permission-destroy" value="{{ $action->id }}">Deletar</button>
+                <button href="#" class="btn btn-danger btn-destroy-ajax" data-url="{{ route('system.permissions.destroy', ['id' => $action->id]) }}">Deletar</button>
             </p>
         @endforeach
     </div>

@@ -39,7 +39,7 @@ class SystemPermissionGetRequest extends FormRequest
     public function rules()
     {
         return [
-            'moduleId' => ['required', 'integer', 'exists:App\Models\User,id']
+            'moduleId' => ['required', 'integer', 'exists:App\Models\SystemModule,id']
         ];
     }
 

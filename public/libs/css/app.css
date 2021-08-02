@@ -10848,6 +10848,11 @@ textarea.form-control-lg {
 /* #################
     DEF. SCSS
 ################# */
+body {
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
 .hide {
   display: none;
 }

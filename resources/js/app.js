@@ -1,8 +1,4 @@
 require('./bootstrap');
-require('./modules/user/index');
-require('./modules/system-module/index');
-require('./modules/system-permission/index');
-require('./modules/content-category/index');
 
 /* #################
     DEF. SCRIPTS
@@ -55,5 +51,33 @@ $('.form-type-ajax').submit(function (event) {
         }
 
         $(".form-errors").show();
+    });
+});
+
+/**
+ * Delete specific data from DB (axios)
+ */
+$('.btn-destroy-ajax').click(function (event) {
+    const urlDelete = $(this).data('url');
+
+    if(_.isNull(urlDelete)) {
+        alert('Atributo data-url é requirido no button');
+    }
+
+    axios.delete(urlDelete).then((response) => {
+        window.location.reload();
+
+    }).catch((err) => {
+        var errMsg = "";
+
+        if(err.response.data.errors !== undefined && !$.isEmptyObject(err.response.data.errors)) {
+            for (const [key, value] of Object.entries(err.response.data.errors)) {
+                errMsg += value + "\n\r";
+            }
+
+            alert(errMsg);
+        } else {
+            alert(err.response.data.message);
+        }
     });
 });

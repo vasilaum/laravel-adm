@@ -20,7 +20,10 @@
                 <a href="{{ route('contents.form', ['id' => $content->id]) }}">Editar</a>
             </p>
             <p>
-                <button href="#" class="btn btn-danger btn-content-destroy" value="{{ $content->id }}">Deletar</button>
+                <a href="{{ route('content.images.index', ['contentId' => $content->id]) }}">Imagens</a>
+            </p>
+            <p>
+                <button href="#" class="btn btn-danger btn-destroy-ajax" data-url="{{ route('contents.destroy', ['id' => $content->id]) }}">Deletar</button>
             </p>
         @endforeach
     </div>

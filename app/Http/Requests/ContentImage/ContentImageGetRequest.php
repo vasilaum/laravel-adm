@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Content;
+namespace App\Http\Requests\ContentImage;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ContentGetRequest extends FormRequest
+class ContentImageGetRequest extends FormRequest
 {
 
     protected $stopOnFirstFailure = false;
@@ -22,32 +22,14 @@ class ContentGetRequest extends FormRequest
     }
 
     /**
-     * Prepare the data for validation.
-     *
-     * @return void
-     */
-    protected function prepareForValidation()
-    {
-        if (count($this->route()->parameters()) > 0) {
-            $this->merge(['contentId' => $this->route('id')]);
-        }
-    }
-
-    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
     public function rules()
     {
-        if (count($this->route()->parameters()) > 0) {
-            return [
-                'contentId' => ['required', 'integer', 'exists:App\Models\Content,id']
-            ];
-        }
-
         return [
-            'categoryId' => ['required', 'integer', 'exists:App\Models\ContentCategory,id']
+            'contentId' => ['required', 'integer', 'exists:App\Models\Content,id']
         ];
     }
 
@@ -58,18 +40,10 @@ class ContentGetRequest extends FormRequest
      */
     public function messages()
     {
-        if (count($this->route()->parameters()) > 0) {
-            return [
-                'required'  => 'O campo :attribute é obrigatório',
-                'integer'   => 'O campo :attribute deve ser um número inteiro',
-                'exists'    => 'O conteúdo (ID :input) deve existir no banco de dados'
-            ];
-        }
-
         return [
             'required'  => 'O campo :attribute é obrigatório',
             'integer'   => 'O campo :attribute deve ser um número inteiro',
-            'exists'    => 'O categoria (ID :input) deve existir no banco de dados'
+            'exists'    => 'O conteúdo (ID :input) deve existir no banco de dados'
         ];
     }
 
