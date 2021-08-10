@@ -19,6 +19,9 @@
                 <a href="{{ route('content.categories.form', ['id' => $category->id]) }}">Editar</a>
             </p>
             <p>
+                <a href="{{ route('content.categories.extrafields.index', ['categoryId' => $category->id]) }}">Campos Extras</a>
+            </p>
+            <p>
                 <a href="{{ route('contents.index', ['categoryId' => $category->id]) }}">Conteúdos</a>
             </p>
             <p>

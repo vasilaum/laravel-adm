@@ -9,6 +9,7 @@ use App\Http\Controllers\UserPermissionController;
 use App\Http\Controllers\SystemModuleController;
 use App\Http\Controllers\SystemPermissionController;
 use App\Http\Controllers\ContentCategoryController;
+use App\Http\Controllers\ContentCategoryExtraFieldController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\ContentImageController;
 
@@ -51,6 +52,12 @@ Route::middleware(['auth', 'system.module.permission'])->group(function () {
     Route::post('content-categories',               [ContentCategoryController::class, 'store'])->name('content.categories.store');
     Route::put('content-categories',                [ContentCategoryController::class, 'update'])->name('content.categories.update');
     Route::delete('content-categories/{id}',        [ContentCategoryController::class, 'destroy'])->name('content.categories.destroy');
+
+    ## CONTENT CATEGORIES EXTRA FIELDS ##
+    Route::get('content-categories/extra-fields',           [ContentCategoryExtraFieldController::class, 'index'])->name('content.categories.extrafields.index');
+    Route::get('content-categories/extra-fields/form',      [ContentCategoryExtraFieldController::class, 'form'])->name('content.categories.extrafields.form');
+    Route::post('content-categories/extra-fields',          [ContentCategoryExtraFieldController::class, 'store'])->name('content.categories.extrafields.store');
+    Route::delete('content-categories/extra-fields/{id}',   [ContentCategoryExtraFieldController::class, 'destroy'])->name('content.categories.extrafields.destroy');
 
     ## CONTENTS ##
     Route::get('contents',              [ContentController::class, 'index'])->name('contents.index');

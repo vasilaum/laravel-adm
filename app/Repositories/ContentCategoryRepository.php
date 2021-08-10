@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\ContentCategory;
+use App\Models\ContentCategoryExtraField;
 
 class ContentCategoryRepository
 {
@@ -37,4 +38,5 @@ class ContentCategoryRepository
     {
         return $this->model->find((int)$requestData['id'])->fill($requestData)->update();
     }
+
 }

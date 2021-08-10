@@ -3,17 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\ContentRepository;
+use App\Repositories\ContentCategoryExtraFieldRepository;
 use App\Http\Requests\Content\ContentGetRequest;
 use App\Http\Requests\Content\ContentPostRequest;
 use App\Http\Requests\Content\ContentPutRequest;
 
 class ContentController extends Controller
 {
-    public function index(ContentGetRequest $request, ContentRepository $repository)
+    private $repository;
+
+    public function __construct(ContentRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    public function index(ContentGetRequest $request)
     {
         try {
             return view('contents.index', array(
-                'contents'      => $repository->findAllWithPaginate($request->get('categoryId'), 1),
+                'contents'      => $this->repository->findAllWithPaginate($request->get('categoryId'), 1),
                 'categoryId'    => $request->get('categoryId')
             ));
         } catch (\Exception $e) {
@@ -21,27 +29,49 @@ class ContentController extends Controller
         }
     }
 
-    public function form(ContentGetRequest $request, ContentRepository $repository, Int $id = NULL)
+    public function form(ContentGetRequest $request, ContentCategoryExtraFieldRepository $contentCategoryExtraFieldRepository, Int $id = NULL)
     {
         try {
             if (!empty($id)) {
                 return view('contents.edit', array(
-                    'content' => $repository->findById($id)
+                    'content'       => $this->repository->findById($id),
+                    'extraFields'   => $contentCategoryExtraFieldRepository->findAllByCategory($id)
                 ));
             }
 
             return view('contents.create', array(
-                'categoryId' => $request->get('categoryId')
+                'categoryId'    => $request->get('categoryId'),
+                'extraFields'   => $contentCategoryExtraFieldRepository->findAllByCategory($request->get('categoryId'))
             ));
         } catch (\Exception $e) {
             return response()->view('errors.500', [], 500);
         }
     }
 
-    public function store(ContentPostRequest $request, ContentRepository $repository)
+    public function store(ContentPostRequest $request)
     {
         try {
-            $repository->store($request->all());
+            $contentExtraFields = $this->repository->extractAllContentExtraFields($request);
+            $contentId          = $this->repository->store($request->all());
+
+            $this->repository->storeExtraFields($contentExtraFields, $contentId);
+
+            return response()->json([
+                'message'               => 'Ação realizada com sucesso',
+                'succefulRequestAction' => 'back'
+            ], 200);
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+            return response()->json([
+                'message'   => 'Ocorreu um erro ao salvar, tente novamente mais tarde'
+            ], 500);
+        }
+    }
+
+    public function update(ContentPutRequest $request)
+    {
+        try {
+            $this->repository->update($request->all());
 
             return response()->json([
                 'message'               => 'Ação realizada com sucesso',
@@ -54,26 +84,10 @@ class ContentController extends Controller
         }
     }
 
-    public function update(ContentPutRequest $request, ContentRepository $repository)
+    public function destroy(Int $id)
     {
         try {
-            $repository->update($request->all());
-
-            return response()->json([
-                'message'               => 'Ação realizada com sucesso',
-                'succefulRequestAction' => 'back'
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message'   => 'Ocorreu um erro ao salvar, tente novamente mais tarde'
-            ], 500);
-        }
-    }
-
-    public function destroy(ContentRepository $repository, Int $id)
-    {
-        try {
-            $result = $repository->destroy($id);
+            $result = $this->repository->destroy($id);
         } catch (\Exception $e) {
             return response()->json(array(
                 'errors'    => (object)[],

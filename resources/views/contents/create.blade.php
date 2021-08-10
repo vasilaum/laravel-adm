@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insetir novo conteúdo</title>
+    <title>Inserir novo conteúdo</title>
 
     <link rel="stylesheet" href="{{ asset('libs/css/app.css') }}" />
 </head>
@@ -16,6 +16,10 @@
             <input type="text" name="name" id="name" />
             <textarea name="data" id="data"></textarea>
             <input type="number" name="category_id" id="category_id" value="{{ $categoryId }}" />
+
+            @foreach ($extraFields as $field)
+                <input type="{{ $field->type }}" name="EX__{{ $field->name }}" value="" />
+            @endforeach
 
             <input type="submit" value="Salvar" />
         </form>

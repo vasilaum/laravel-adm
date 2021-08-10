@@ -89,4 +89,5 @@ class ContentCategoryController extends Controller
             'message'   => "Registro deletado com sucesso!"
         ), 200);
     }
+
 }

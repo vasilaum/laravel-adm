@@ -23,6 +23,14 @@ class ContentCategory extends Model
      */
     public function contents()
     {
-        return $this->hasMany(Content::class);
+        return $this->hasMany(Content::class, 'category_id');
+    }
+
+    /**
+     * Get all extra fields for category
+     */
+    public function extraFields()
+    {
+        return $this->hasMany(ContentCategoryExtraField::class, 'category_id');
     }
 }
