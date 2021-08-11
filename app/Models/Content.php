@@ -47,10 +47,18 @@ class Content extends Model
     }
 
     /**
-     * Get all contents for category
+     * Get all images for content
      */
     public function images()
     {
         return $this->hasMany(ContentImage::class);
+    }
+
+    /**
+     * Get all extra fields for content
+     */
+    public function extraFields()
+    {
+        return $this->hasMany(ContentExtraField::class);
     }
 }

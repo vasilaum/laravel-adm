@@ -33,9 +33,13 @@ class ContentController extends Controller
     {
         try {
             if (!empty($id)) {
+                $content                = $this->repository->findById($id);
+                $categoryExtraFields    = $contentCategoryExtraFieldRepository->findAllByCategory($content->category_id);
+                $mergeExtraFields       = $this->repository->extraFieldsMerge($content->extraFields, $categoryExtraFields);
+
                 return view('contents.edit', array(
-                    'content'       => $this->repository->findById($id),
-                    'extraFields'   => $contentCategoryExtraFieldRepository->findAllByCategory($id)
+                    'content'       => $content,
+                    'extraFields'   => $mergeExtraFields
                 ));
             }
 
@@ -61,7 +65,6 @@ class ContentController extends Controller
                 'succefulRequestAction' => 'back'
             ], 200);
         } catch (\Exception $e) {
-            echo $e->getMessage();
             return response()->json([
                 'message'   => 'Ocorreu um erro ao salvar, tente novamente mais tarde'
             ], 500);
@@ -71,7 +74,10 @@ class ContentController extends Controller
     public function update(ContentPutRequest $request)
     {
         try {
+            $contentExtraFields = $this->repository->extractAllContentExtraFields($request);
+
             $this->repository->update($request->all());
+            $this->repository->updateOrCreateExtraFields($contentExtraFields, $request->get('id'));
 
             return response()->json([
                 'message'               => 'Ação realizada com sucesso',

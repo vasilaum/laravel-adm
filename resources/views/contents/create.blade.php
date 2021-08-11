@@ -13,15 +13,24 @@
 
             @csrf
 
-            <input type="text" name="name" id="name" />
-            <textarea name="data" id="data"></textarea>
-            <input type="number" name="category_id" id="category_id" value="{{ $categoryId }}" />
+            <input type="hidden" name="category_id" id="category_id" value="{{ $categoryId }}" />
 
-            @foreach ($extraFields as $field)
-                <input type="{{ $field->type }}" name="EX__{{ $field->name }}" value="" />
-            @endforeach
+            <div class="form-group">
+                <label>Nome ou Título: </label>
+                <input type="text" name="name" id="name" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Texto: </label>
+                <textarea name="data" id="data" class="form-control"></textarea>
+            </div>
 
-            <input type="submit" value="Salvar" />
+            <hr />
+
+            @include('def.generate-extra-fields-create')
+
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="form-control" />
+            </div>
         </form>
     </div>
 

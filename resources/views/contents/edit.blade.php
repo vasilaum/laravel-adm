@@ -19,6 +19,10 @@
             <textarea name="data" id="data">{{ $content->data }}</textarea>
             <input type="number" name="category_id" id="category_id" value="{{ $content->category_id }}" />
 
+            @foreach ($extraFields as $field)
+                <input type="{{ $field->type }}" name="EX__{{ $field->name }}" value="{{ $field->value }}" />
+            @endforeach
+
             <input type="submit" value="Salvar" />
         </form>
     </div>
