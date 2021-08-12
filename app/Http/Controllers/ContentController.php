@@ -56,7 +56,7 @@ class ContentController extends Controller
     {
         try {
             $contentExtraFields = $this->repository->extractAllContentExtraFields($request);
-            $contentId          = $this->repository->store($request->all());
+            $contentId          = $this->repository->store($request->all()); // Request is without extra fields //
 
             $this->repository->storeExtraFields($contentExtraFields, $contentId);
 

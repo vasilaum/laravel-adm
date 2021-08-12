@@ -48,8 +48,8 @@ class ContentRepository
 
         foreach ($params as $paramName => $paramValue) {
             if (!empty($paramValue) && strpos($paramName, "EX__") === 0) { // If param name starts with "EX__" is a extra field //
-                $fieldName = substr($paramName, 4);
-                $extraFields[$fieldName] = $paramValue;
+                $fieldName                  = substr($paramName, 4);
+                $extraFields[$fieldName]    = is_array($paramValue) ? json_encode($paramValue) : $paramValue;
 
                 $request->request->remove($paramName);
             }
@@ -69,11 +69,12 @@ class ContentRepository
         ContentExtraField::insert($data);
     }
 
-    public function updateOrCreateExtraFields($extraFields, $contentId) {
-        foreach($extraFields as $paramName => $paramValue) {
+    public function updateOrCreateExtraFields($extraFields, $contentId)
+    {
+        foreach ($extraFields as $paramName => $paramValue) {
             $contentExtraField = ContentExtraField::where('name', $paramName)->where('content_id', $contentId)->first();
 
-            if(!$contentExtraField) {
+            if (!$contentExtraField) {
                 ContentExtraField::insert([
                     'name' => $paramName, 'value' => $paramValue, 'content_id' => $contentId
                 ]);
@@ -94,10 +95,15 @@ class ContentRepository
         foreach ($categoryExtraFields as $categoryExtraField) {
             foreach ($contentExtraFields as $contentExtraField) {
                 if ($contentExtraField->name === $categoryExtraField->name) {
-                    $fieldObj           = new stdClass;
-                    $fieldObj->name     = $categoryExtraField->name;
-                    $fieldObj->type     = $categoryExtraField->type;
-                    $fieldObj->value    = $contentExtraField->value;
+                    $fieldObj               = new stdClass;
+                    $fieldObj->name         = $categoryExtraField->name;
+                    $fieldObj->field_id     = $categoryExtraField->field_id;
+                    $fieldObj->placeholder  = $categoryExtraField->placeholder;
+                    $fieldObj->label        = $categoryExtraField->label;
+                    $fieldObj->mask         = $categoryExtraField->mask;
+                    $fieldObj->options      = $categoryExtraField->options;
+                    $fieldObj->type         = $categoryExtraField->type;
+                    $fieldObj->value        = $contentExtraField->value;
 
                     array_push($extraFields, $fieldObj);
                     array_push($fieldsWithValue, $categoryExtraField->name);
@@ -107,11 +113,16 @@ class ContentRepository
 
         // push rest of fields with no value //
         foreach ($categoryExtraFields as $categoryExtraField) {
-            if(!in_array($categoryExtraField->name, $fieldsWithValue)) {
-                $fieldObj           = new stdClass;
-                $fieldObj->name     = $categoryExtraField->name;
-                $fieldObj->type     = $categoryExtraField->type;
-                $fieldObj->value    = "";
+            if (!in_array($categoryExtraField->name, $fieldsWithValue)) {
+                $fieldObj               = new stdClass;
+                $fieldObj->name         = $categoryExtraField->name;
+                $fieldObj->field_id     = $categoryExtraField->field_id;
+                $fieldObj->placeholder  = $categoryExtraField->placeholder;
+                $fieldObj->label        = $categoryExtraField->label;
+                $fieldObj->mask         = $categoryExtraField->mask;
+                $fieldObj->options      = $categoryExtraField->options;
+                $fieldObj->type         = $categoryExtraField->type;
+                $fieldObj->value        = "";
 
                 array_push($extraFields, $fieldObj);
             }

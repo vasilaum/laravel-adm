@@ -42,7 +42,7 @@
                 <label>{{ $field->label }}</label>
                 @foreach ($field->options as $option)
                     <div class="form-check">
-                        <input type="checkbox" name="EX__{{ $field->name }}" id="{{ $field->field_id }}" value="{{ $option->value }}" class="form-check-input" />
+                        <input type="checkbox" name="EX__{{ $field->name }}[]" id="{{ $field->field_id }}" value="{{ $option->value }}" class="form-check-input" />
                         <label class="form-check-label">
                             {{ $option->name }}
                         </label>

@@ -8,22 +8,29 @@
     <link rel="stylesheet" href="{{ asset('libs/css/app.css') }}" />
 </head>
 <body>
-    <div>
+    <div class="container col-12">
         <form action="{{ route('contents.store') }}" method="POST" class="form-type-ajax">
 
             @csrf
             @method("PUT")
 
             <input type="hidden" name="id" id="content_id" value="{{ $content->id }}" />
-            <input type="text" name="name" id="name" value="{{ $content->name }}" />
-            <textarea name="data" id="data">{{ $content->data }}</textarea>
-            <input type="number" name="category_id" id="category_id" value="{{ $content->category_id }}" />
+            <input type="hidden" name="category_id" id="category_id" value="{{ $content->category_id }}" />
 
-            @foreach ($extraFields as $field)
-                <input type="{{ $field->type }}" name="EX__{{ $field->name }}" value="{{ $field->value }}" />
-            @endforeach
+            <div class="form-group">
+                <label>Nome ou Título</label>
+                <input type="text" name="name" id="name" value="{{ $content->name }}" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Texto</label>
+                <textarea name="data" id="data" class="form-control">{{ $content->data }}</textarea>
+            </div>
 
-            <input type="submit" value="Salvar" />
+            @include('def.generate-extra-fields-edit')
+
+            <div class="form-group">
+                <input type="submit" value="Salvar" />
+            </div>
         </form>
     </div>
 
