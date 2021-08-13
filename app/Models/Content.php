@@ -35,6 +35,7 @@ class Content extends Model
     protected $fillable = [
         'name',
         'data',
+        'date',
         'category_id'
     ];
 

@@ -21,7 +21,7 @@ class ContentController extends Controller
     {
         try {
             return view('contents.index', array(
-                'contents'      => $this->repository->findAllWithPaginate($request->get('categoryId'), 1),
+                'contents'      => $this->repository->findAllWithPaginate($request->get('categoryId'), 10),
                 'categoryId'    => $request->get('categoryId')
             ));
         } catch (\Exception $e) {

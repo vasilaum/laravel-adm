@@ -29,6 +29,7 @@ class ContentPostRequest extends FormRequest
         return [
             'name'          => ['required', 'max:100', 'min:3'],
             'data'          => ['required', 'min:5'],
+            'date'          => ['required', 'date'],
             'category_id'   => ['required', 'integer']
         ];
     }
@@ -44,7 +45,8 @@ class ContentPostRequest extends FormRequest
             'required'  => 'O campo :attribute é obrigatório',
             'max'       => 'O campo :attribute deve ser menor ou igual a :max',
             'min'       => 'O campo :attribute deve ser maior ou igual a :min',
-            'integer'   => 'O campo :attribute deve ser um número inteiro'
+            'integer'   => 'O campo :attribute deve ser um número inteiro',
+            'date'      => 'O campo :attribute deve ser uma data válida'
         ];
     }
 }

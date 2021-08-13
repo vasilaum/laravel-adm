@@ -12,7 +12,7 @@ class ContentCategoryController extends Controller
     {
         try {
             return view('content-categories.index', array(
-                'categories' => $repository->findAllWithPaginate(1)
+                'categories' => $repository->findAllWithPaginate(10)
             ));
         } catch (\Exception $e) {
             return response()->view('errors.500', [], 500);
@@ -70,10 +70,22 @@ class ContentCategoryController extends Controller
     {
         try {
             $result = $repository->destroy($id);
-        } catch (\Exception $e) {
+        } catch (\Illuminate\Database\QueryException $ex1) {
+            if($ex1->getCode() == 23000) {
+                return response()->json(array(
+                    'errors'    => (object)[],
+                    'message'   => "Esta categoria contem conteúdos vinculados, para sua segurança delete todos os conteúdos antes, ou somente desative esta categoria"
+                ), 400);
+            }
+
             return response()->json(array(
                 'errors'    => (object)[],
-                'message'   => "Error: " . $e->getMessage()
+                'message'   => "Error: " . $ex1->getMessage()
+            ), 400);
+        } catch (\Exception $ex2) {
+            return response()->json(array(
+                'errors'    => (object)[],
+                'message'   => "Error: " . $ex2->getMessage()
             ), 400);
         }
 

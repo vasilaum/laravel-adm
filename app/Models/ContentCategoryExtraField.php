@@ -9,9 +9,6 @@ class ContentCategoryExtraField extends Model
 {
     use HasFactory;
 
-    /**
-     * hooks.
-     */
     public static function boot()
     {
         static::retrieved(function (ContentCategoryExtraField $extraField) {
@@ -21,14 +18,29 @@ class ContentCategoryExtraField extends Model
             }
         });
 
+        // Delete content extra fields too //
+        static::deleting(function (ContentCategoryExtraField $extraField) {
+            $categoryId                     = $extraField->category_id;
+            $contentBelongingCategory       = Content::where('category_id', $categoryId)->get();
+            $extraFieldsIdsBeloningContent  = [];
+
+            if(count($contentBelongingCategory) > 0) {
+                foreach($contentBelongingCategory as $content) {
+                    array_push(
+                        $extraFieldsIdsBeloningContent,
+                        ContentExtraField::where('content_id', $content->id)->where('name', $extraField->name)->first()->id
+                    );
+                }
+            }
+
+            if(count($extraFieldsIdsBeloningContent) > 0) {
+                ContentExtraField::destroy($extraFieldsIdsBeloningContent);
+            }
+        });
+
         parent::boot();
     }
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'name',
         'field_id',

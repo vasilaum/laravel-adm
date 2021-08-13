@@ -29,6 +29,7 @@ class ContentPutRequest extends FormRequest
         return [
             'name'          => ['required', 'max:100', 'min:3'],
             'data'          => ['required', 'min:5'],
+            'date'          => ['required', 'date'],
             'category_id'   => ['required', 'integer'],
             'id'            => ['required', 'integer', 'exists:App\Models\Content,id']
         ];
@@ -46,7 +47,8 @@ class ContentPutRequest extends FormRequest
             'max'       => 'O campo :attribute deve ser menor ou igual a :max',
             'min'       => 'O campo :attribute deve ser maior ou igual a :min',
             'integer'   => 'O campo :attribute deve ser um número inteiro',
-            'exists'    => 'O Registro (ID :input) deve existir no banco de dados'
+            'exists'    => 'O Registro (ID :input) deve existir no banco de dados',
+            'date'      => 'O campo :attribute deve ser uma data válida'
         ];
     }
 }

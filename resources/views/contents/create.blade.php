@@ -23,6 +23,10 @@
                 <label>Texto: </label>
                 <textarea name="data" id="data" class="form-control"></textarea>
             </div>
+            <div class="form-group">
+                <label>Data: </label>
+                <input type="date" name="date" id="date" class="form-control" />
+            </div>
 
             <hr />
 

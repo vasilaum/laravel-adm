@@ -28,8 +28,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            @foreach ($categories as $category)
+                        @foreach ($categories as $category)
+                            <tr>
                                 <td>{{ $category->id }}</td>
                                 <td>{{ $category->name }}</td>
                                 <td>
@@ -44,8 +44,8 @@
                                 <td>
                                     <button href="#" class="btn btn-danger btn-destroy-ajax" data-url="{{ route('content.categories.destroy', ['id' => $category->id]) }}">Deletar</button>
                                 </td>
-                            @endforeach
-                        </tr>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

@@ -18,7 +18,7 @@ class ContentRepository
 
     public function findAllWithPaginate(Int $categoryId, Int $perPage)
     {
-        return $this->model->where('category_id', $categoryId)->simplePaginate($perPage)->withQueryString();
+        return $this->model->where('category_id', $categoryId)->orderBy('date', 'ASC')->simplePaginate($perPage)->withQueryString();
     }
 
     public function findById(Int $id)

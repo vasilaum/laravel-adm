@@ -21,16 +21,18 @@
                         <tr>
                             <th scope="col">Id</th>
                             <th scope="col">Nome</th>
+                            <th scope="col">Data</th>
                             <th scope="col">Imagens</th>
                             <th scope="col">Editar</th>
                             <th scope="col">Excluir</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            @foreach ($contents as $content)
+                        @foreach ($contents as $content)
+                            <tr>
                                 <td>{{ $content->id }}</td>
                                 <td>{{ $content->name }}</td>
+                                <td>{{ date_format(date_create($content->date), 'd/m/Y') }}</td>
                                 <td>
                                     <a href="{{ route('content.images.index', ['contentId' => $content->id]) }}">Imagens</a>
                                 </td>
@@ -40,8 +42,8 @@
                                 <td>
                                     <button href="#" class="btn btn-danger btn-destroy-ajax" data-url="{{ route('contents.destroy', ['id' => $content->id]) }}">Deletar</button>
                                 </td>
-                            @endforeach
-                        </tr>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
