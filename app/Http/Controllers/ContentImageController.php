@@ -13,7 +13,7 @@ class ContentImageController extends Controller
     {
         try {
             return view('contents.images.index', array(
-                'images'        => $repository->findAllWithPaginate($request->get('contentId'), 1),
+                'images'        => $repository->findAllWithPaginate($request->get('contentId'), 30),
                 'contentId'     => $request->get('contentId')
             ));
         } catch (\Exception $e) {

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ asset('libs/css/app.css') }}" />
 </head>
 <body>
-    <div>
+    <div class="container col-12">
         <form action="{{ route('contents.store') }}" method="POST" class="form-type-ajax">
 
             @csrf

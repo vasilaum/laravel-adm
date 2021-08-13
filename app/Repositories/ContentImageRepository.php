@@ -19,7 +19,7 @@ class ContentImageRepository
 
     public function findAllWithPaginate(Int $contentId, Int $perPage)
     {
-        return $this->model->where('content_id', $contentId)->simplePaginate($perPage)->withQueryString();
+        return $this->model->where('content_id', $contentId)->orderBy('order', 'ASC')->simplePaginate($perPage)->withQueryString();
     }
 
     public function findById(Int $id)

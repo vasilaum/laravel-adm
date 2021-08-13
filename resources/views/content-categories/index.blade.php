@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,30 +8,52 @@
     <link rel="stylesheet" href="{{ asset('libs/css/app.css') }}" />
 </head>
 <body>
-    <div>
-        <a href="{{ route('content.categories.form') }}">Novo</a>
-    </div>
-    <div>
-        @foreach ($categories as $category)
-            <p>{{ $category->id }}</p>
-            <p>{{ $category->name }}</p>
-            <p>
-                <a href="{{ route('content.categories.form', ['id' => $category->id]) }}">Editar</a>
-            </p>
-            <p>
-                <a href="{{ route('content.categories.extrafields.index', ['categoryId' => $category->id]) }}">Campos Extras</a>
-            </p>
-            <p>
-                <a href="{{ route('contents.index', ['categoryId' => $category->id]) }}">Conteúdos</a>
-            </p>
-            <p>
-                <button href="#" class="btn btn-danger btn-destroy-ajax" data-url="{{ route('content.categories.destroy', ['id' => $category->id]) }}">Deletar</button>
-            </p>
-        @endforeach
-    </div>
+    <div class="container col-12">
+        <div class="col-12">
+            <a href="{{ route('content.categories.form') }}" class="btn btn-info">Novo</a>
+            <a href="{{ route('home') }}" class="btn btn-info">Voltar p/ menu</a>
+        </div>
 
-    <div>
-        {{ $categories->links() }}
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Conteúdos</th>
+                            <th scope="col">Campos extras nos conteúdos</th>
+                            <th scope="col">Editar</th>
+                            <th scope="col">Excluir</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            @foreach ($categories as $category)
+                                <td>{{ $category->id }}</td>
+                                <td>{{ $category->name }}</td>
+                                <td>
+                                    <a href="{{ route('contents.index', ['categoryId' => $category->id]) }}">Conteúdos</a>
+                                </td>
+                                <td>
+                                    <a href="{{ route('content.categories.extrafields.index', ['categoryId' => $category->id]) }}">Campos Extras</a>
+                                </td>
+                                <td>
+                                    <a href="{{ route('content.categories.form', ['id' => $category->id]) }}" class="btn btn-warning">Editar</a>
+                                </td>
+                                <td>
+                                    <button href="#" class="btn btn-danger btn-destroy-ajax" data-url="{{ route('content.categories.destroy', ['id' => $category->id]) }}">Deletar</button>
+                                </td>
+                            @endforeach
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-12">
+            {{ $categories->links() }}
+        </div>
     </div>
 
     <script src="{{ asset('libs/js/app.js') }}"></script>
